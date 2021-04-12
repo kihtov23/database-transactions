@@ -1,12 +1,11 @@
 ﻿using System;
+using EFGetStarted;
 
-namespace DatabaseTransactions
+
+Console.WriteLine("Started!");
+
+using FishingLogDbContext dbContext = new();
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }
+    dbContext.Accounts.Add(new (){Name = "TestName1", Balance = 1000});
+    dbContext.SaveChanges();
 }
