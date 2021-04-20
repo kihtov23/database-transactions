@@ -11,7 +11,7 @@ using FishingLogDbContext dbContext = new();
     ClearTable(nameof(dbContext.Accounts));
     DataSeed();
 
-    UpdateJustWithSaveChanges1();
+    //UpdateJustWithSaveChanges1();
     //UpdateJustWithSaveChanges2();
 
     //SimpleRowUpdate1();
