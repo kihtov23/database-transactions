@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,9 @@ namespace EFGetStarted
         public DbSet<Account> Accounts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlServer(@"Data Source=localhost;Initial Catalog=FishingLog;Integrated Security=True;");
+            => options
+                .UseSqlServer(@"Data Source=localhost;Initial Catalog=FishingLog;Integrated Security=True;")
+                .LogTo(Console.WriteLine);
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

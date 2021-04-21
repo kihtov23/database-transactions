@@ -11,17 +11,15 @@ using FishingLogDbContext dbContext = new();
     ClearTable(nameof(dbContext.Accounts));
     DataSeed();
 
-    //UpdateJustWithSaveChanges1();
-    //UpdateJustWithSaveChanges2();
+    //SingleUpdateWithOneSaveChanges();
 
-    //SimpleRowUpdate1();
-    //SimpleRowUpdate2();
+    //SeveralUpdatesWithOneSaveChange();
 
-    // BreakConstraint();
+    //BreakConstraintWithOneSaveChange();
 
-    // TransferMoney();
+    //ExplicitTransactionWithOneSaveChange();
 
-    // MakeBadTransaction();
+    //ExplicitTransactionWithMultipleSaveChanges();
 }
 
 void ClearTable(string name)
@@ -39,28 +37,38 @@ void DataSeed()
     dbContext.SaveChanges();
 }
 
-
-void TransferMoney()
+void SingleUpdateWithOneSaveChanges()
 {
-    var fromAccount = dbContext.Accounts.First(a => a.Name == "Ivan");
-    fromAccount.Balance = fromAccount.Balance - 200;
+    Console.WriteLine("**********************************************");
+    Console.WriteLine("*********************dbContext.Accounts.First(a => a.Id == 1)*************************");
+    Console.WriteLine("**********************************************");
 
-    var toAccount = dbContext.Accounts.First(a => a.Name == "Olha");
-    toAccount.Balance = toAccount.Balance + 200;
+    var a = dbContext.Accounts.First(a => a.Id == 1);
+
+    Console.WriteLine("**********************************************");
+    Console.WriteLine("*********************a.Name = 'Test1'*************************");
+    Console.WriteLine("**********************************************");
+
+    a.Name = "Test1";
+
+    Console.WriteLine("**********************************************");
+    Console.WriteLine("*********************dbContext.SaveChanges()*************************");
+    Console.WriteLine("**********************************************");
+
     dbContext.SaveChanges();
 }
 
-void MakeBadTransaction()
+void SeveralUpdatesWithOneSaveChange()
 {
-    var fromAccount = dbContext.Accounts.First(a => a.Name == "ivan");
-    fromAccount.Name = "Ivan";
+    var a = dbContext.Accounts.First(a => a.Id == 1);
+    a.Name = "Test1";
 
-    var toAccount = dbContext.Accounts.First(a => a.Name == "Olha");
-    toAccount.Name = "Ivan";
+    var b = dbContext.Accounts.First(t => t.Id == 2);
+    b.Name = "Test2";
     dbContext.SaveChanges();
 }
 
-void BreakConstraint()
+void BreakConstraintWithOneSaveChange()
 {
     var a = dbContext.Accounts.First(a => a.Id == 1);
     a.Name = "Test1";
@@ -70,7 +78,7 @@ void BreakConstraint()
     dbContext.SaveChanges();
 }
 
-void SimpleRowUpdate1()
+void ExplicitTransactionWithOneSaveChange()
 {
     using var transaction = dbContext.Database.BeginTransaction(IsolationLevel.ReadUncommitted);
     var a = dbContext.Accounts.First(a => a.Name == "Oleg");
@@ -79,26 +87,16 @@ void SimpleRowUpdate1()
     transaction.Commit();
 }
 
-void SimpleRowUpdate2()
+void ExplicitTransactionWithMultipleSaveChanges()
 {
     using var transaction = dbContext.Database.BeginTransaction(IsolationLevel.ReadUncommitted);
-    var a = dbContext.Accounts.First(a => a.Name == "Test1");
-    a.Name = "Test2";
+    var a = dbContext.Accounts.First(a => a.Id == 1);
+    a.Name = "Test1";
+    dbContext.SaveChanges();
+
+    var b = dbContext.Accounts.First(a => a.Name == "Test1");
+    b.Name = "Test2";
     dbContext.SaveChanges();
     transaction.Commit();
-}
-
-void UpdateJustWithSaveChanges1()
-{
-    var a = dbContext.Accounts.First(a => a.Name == "Oleg");
-    a.Name = "Test1";
-    dbContext.SaveChanges();
-}
-
-void UpdateJustWithSaveChanges2()
-{
-    var a = dbContext.Accounts.First(a => a.Name == "Oleg");
-    a.Name = "Test1";
-    dbContext.SaveChanges();
 }
 
