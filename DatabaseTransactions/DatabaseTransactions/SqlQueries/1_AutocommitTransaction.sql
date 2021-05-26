@@ -4,12 +4,19 @@ SET IMPLICIT_TRANSACTIONS OFF;
 
 UPDATE Accounts
   SET 
-      [Name] = 'Test1234'
+      [Name] = 'Test123'
 WHERE Id = 1;
 
 UPDATE Accounts
   SET 
-      [Name] = 'Test12345'
+      [Name] = 'Test456'
 WHERE Id = 2;
 
 ROLLBACK;
+
+
+
+SELECT TOP (1000) [Id]
+      ,[Name]
+      ,[Balance]
+  FROM [FishingLog].[dbo].[Accounts]

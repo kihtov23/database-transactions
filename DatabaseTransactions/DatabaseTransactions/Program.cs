@@ -114,7 +114,8 @@ void ExplicitTransactionWithMultipleSaveChanges()
 
     using var transaction = dbContext.Database.BeginTransaction(IsolationLevel.ReadUncommitted);
     {
-        var a = dbContext.Accounts.First(a => a.Id == 1);
+        var a = dbContext.Accounts.First(a => a.Id == 1); 
+
         a.Name = "Test1";
         dbContext.SaveChanges();
 
@@ -124,4 +125,3 @@ void ExplicitTransactionWithMultipleSaveChanges()
         transaction.Commit();
     }
 }
-
